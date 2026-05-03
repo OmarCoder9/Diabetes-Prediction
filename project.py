@@ -163,7 +163,7 @@ print("Step #6: Machine Learning Models")
 print("="*45 + "\n")
 
 models = {
-    "Decision Tree": DecisionTreeClassifier(criterion="entropy", random_state=42), 
+    "Decision Tree": DecisionTreeClassifier(criterion="entropy", min_samples_leaf=10, random_state=42), 
     "Naive Bayes": GaussianNB(),
     "Logistec Regression": LogisticRegression(max_iter=1000, random_state=42)
 }
@@ -227,7 +227,7 @@ plt.show()
 
 #Confusion Matrix for the best model
 winning_model = models[best_model_name]
-y_pred_best = winning_model.predict(x_test)
+y_pred_best = winning_model.predict(x_test_scaled)
 cm = confusion_matrix(y_test, y_pred_best)
 plt.figure(figsize=(8,6))
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=list(class_mapping.values()),yticklabels=list(class_mapping.values()))
