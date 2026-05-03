@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,13 +12,14 @@ from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.linear_model import LogisticRegression
-
+plot_dir = "Project_plots"
+os.makedirs(plot_dir, exist_ok=True)
 # 1. load dataset
 print("="*45)
 print("Step #1: DataSet information")
 print("="*45 + "\n")
 
-df = pd.read_csv("Dataset_of_Diabetes.csv")
+df = pd.read_csv("./Data/Dataset_of_Diabetes.csv")
 print("Dataset info")
 df.info()
 print("\n--- First 5 Rows ---")
@@ -37,7 +39,7 @@ print("="*45 + "\n")
 plt.figure(figsize=(10,4))
 sns.heatmap(df.isnull(), yticklabels=False, cbar=False, cmap='viridis')
 plt.title("Missing Data Map (Yellow lines = Missing)")
-plt.savefig("Missing_Data_Map.png", dpi=300, bbox_inches = 'tight')
+plt.savefig(f"{plot_dir}/Missing_Data_Map.png", dpi=300, bbox_inches = 'tight')
 plt.show()
 
 
@@ -59,7 +61,7 @@ for i, col in enumerate(features_to_plot):
     sns.boxplot(y=df_clean[col], color='skyblue')
     plt.title(f"Outliers in {col}")
     plt.tight_layout()
-plt.savefig("Outliers_Boxplots.png", dpi=300, bbox_inches = 'tight')
+plt.savefig(f"{plot_dir}/Outliers_Boxplots.png", dpi=300, bbox_inches = 'tight')
 plt.show()
 
 for col in features_to_plot:
@@ -134,10 +136,13 @@ X = df_clean.drop('CLASS', axis=1)
 y = df_clean['CLASS']
 
 
-scaler = MinMaxScaler()
-X_scaled = scaler.fit_transform(X)
 
-x_train, x_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42)
+x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+
+scaler = MinMaxScaler()
+x_train_scaled = scaler.fit_transform(x_train)
+x_test_scaled = scaler.fit_transform(x_test)
 
 class_mapping = {0: "Non-Diabetic", 1:'Predicted-Diabetic', 2:'Diabetic'}
 
@@ -146,7 +151,7 @@ before_smote = pd.Series(y_train).map(class_mapping).value_counts()
 print(before_smote.to_string())
 
 smote = SMOTE(random_state=42)
-x_train_smote, y_train_smote = smote.fit_resample(x_train, y_train)
+x_train_smote, y_train_smote = smote.fit_resample(x_train_scaled, y_train)
 
 print("\nClass Distribution after SMOTE: ")
 after_smote = pd.Series(y_train_smote).map(class_mapping).value_counts()
@@ -174,7 +179,7 @@ print("-"*45)
 
 for name, model in models.items():
     model.fit(x_train_smote, y_train_smote)
-    y_pred = model.predict(x_test)
+    y_pred = model.predict(x_test_scaled)
     acc = accuracy_score(y_test, y_pred) * 100
     results[name] = acc
     print(f"{name:<20} | {acc:.2f}%")
@@ -193,7 +198,7 @@ sns.barplot(x=list(results.keys()), y=list(results.values()),hue=list(results.ke
 plt.ylabel('Accuracy Score (%)')
 plt.title("Algorithm Accuracy Comparison")
 plt.ylim(0,100)
-plt.savefig("Algorithm_Accuracy.png", dpi=300, bbox_inches = 'tight')
+plt.savefig(f"{plot_dir}/Algorithm_Accuracy.png", dpi=300, bbox_inches = 'tight')
 plt.show()
 
 #plotting the Decision Tree
@@ -201,7 +206,7 @@ plt.figure(figsize=(20, 10))
 tree_model = models["Decision Tree"]
 plot_tree(tree_model, feature_names=X.columns, class_names=list(label_encoder.classes_), filled=True, rounded=True, fontsize=6)
 plt.title("Decision Tree")
-plt.savefig("Decision_Tree.png", dpi=300, bbox_inches='tight')
+plt.savefig(f"{plot_dir}/Decision_Tree.png", dpi=300, bbox_inches='tight')
 plt.show()
 
 
@@ -209,14 +214,14 @@ plt.show()
 plt.figure(figsize=(12,8))
 sns.heatmap(df_clean.corr(), annot=True, cmap='coolwarm', fmt='.2f')
 plt.title("Correlation Matrix of Diabetes Factors")
-plt.savefig("Correlation_Matrix.png", dpi=300, bbox_inches = 'tight')
+plt.savefig(f"{plot_dir}/Correlation_Matrix.png", dpi=300, bbox_inches = 'tight')
 plt.show()
 
 # Age Distribution by Class
 plt.figure(figsize=(10,6))
 sns.histplot(data=df, x='AGE', hue='CLASS', multiple="stack")
 plt.title("Age Distribution by Diabetes Class")
-plt.savefig("Age_Distribution.png", dpi=300, bbox_inches = 'tight')
+plt.savefig(f"{plot_dir}/Age_Distribution.png", dpi=300, bbox_inches = 'tight')
 plt.show()
 
 
@@ -229,5 +234,5 @@ sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=list(class_mappin
 plt.title(f"Confusion Matrix: {best_model_name}")
 plt.ylabel("Actual Diagnosis")
 plt.xlabel("Predicted Diagnosis")
-plt.savefig("Confusion_Matrix.png", dpi=300, bbox_inches = 'tight')
+plt.savefig(f"{plot_dir}/Confusion_Matrix.png", dpi=300, bbox_inches = 'tight')
 plt.show()
