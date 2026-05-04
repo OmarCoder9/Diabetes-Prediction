@@ -135,14 +135,13 @@ df_clean['CLASS'] = label_encoder.fit_transform(df_clean['CLASS'])
 X = df_clean.drop('CLASS', axis=1)
 y = df_clean['CLASS']
 
-
-
-x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-
 scaler = MinMaxScaler()
-x_train_scaled = scaler.fit_transform(x_train)
-x_test_scaled = scaler.transform(x_test)
+x_scaled = scaler.fit_transform(X)
+
+x_train, x_test, y_train, y_test = train_test_split(x_scaled, y, test_size=0.2, random_state=42)
+
+
+
 
 class_mapping = {0: "Non-Diabetic", 1:'Predicted-Diabetic', 2:'Diabetic'}
 
@@ -151,7 +150,7 @@ before_smote = pd.Series(y_train).map(class_mapping).value_counts()
 print(before_smote.to_string())
 
 smote = SMOTE(random_state=42)
-x_train_smote, y_train_smote = smote.fit_resample(x_train_scaled, y_train)
+x_train_smote, y_train_smote = smote.fit_resample(x_train, y_train)
 
 print("\nClass Distribution after SMOTE: ")
 after_smote = pd.Series(y_train_smote).map(class_mapping).value_counts()
@@ -179,7 +178,7 @@ print("-"*45)
 
 for name, model in models.items():
     model.fit(x_train_smote, y_train_smote)
-    y_pred = model.predict(x_test_scaled)
+    y_pred = model.predict(x_test)
     acc = accuracy_score(y_test, y_pred) * 100
     results[name] = acc
     print(f"{name:<20} | {acc:.2f}%")
@@ -227,7 +226,7 @@ plt.show()
 
 #Confusion Matrix for the best model
 winning_model = models[best_model_name]
-y_pred_best = winning_model.predict(x_test_scaled)
+y_pred_best = winning_model.predict(x_test)
 cm = confusion_matrix(y_test, y_pred_best)
 plt.figure(figsize=(8,6))
 sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=list(class_mapping.values()),yticklabels=list(class_mapping.values()))
