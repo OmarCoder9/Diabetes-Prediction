@@ -165,7 +165,7 @@ print("="*45 + "\n")
 models = {
     "Decision Tree": DecisionTreeClassifier(criterion="entropy", min_samples_leaf=10, random_state=42), 
     "Naive Bayes": GaussianNB(),
-    "Logistec Regression": LogisticRegression(max_iter=1000, random_state=42)
+    "Logistic Regression": LogisticRegression(max_iter=1000, random_state=42)
 }
 
 k_values = [4, 5, 6, 7, 9, 10]
