@@ -142,7 +142,7 @@ x_train, x_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 
 scaler = MinMaxScaler()
 x_train_scaled = scaler.fit_transform(x_train)
-x_test_scaled = scaler.fit_transform(x_test)
+x_test_scaled = scaler.transform(x_test)
 
 class_mapping = {0: "Non-Diabetic", 1:'Predicted-Diabetic', 2:'Diabetic'}
 
