@@ -23,7 +23,7 @@ Data mining in healthcare requires a smart, human-level approach. We recognized 
 ### 1.1 Data Exploration (Raw State)
 Before processing, we examined the raw medical records. The dataset included clinical markers alongside administrative identifiers that do not impact health results.
 
-![Raw Data Spreadsheet](ReadMe_Assets\spredsheet.png)  
+![Raw Data Spreadsheet](ReadMe_Assets/spredsheet.png)  
 *Observation: Raw data contains administrative columns like ID and No_Pation which act as noise for predictive modeling.*
 
 ### 1.2 Iterative Cleaning & Selection
