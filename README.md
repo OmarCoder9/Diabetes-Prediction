@@ -23,7 +23,7 @@ Data mining in healthcare requires a smart, human-level approach. We recognized 
 ### 1.1 Data Exploration (Raw State)
 Before processing, we examined the raw medical records. The dataset included clinical markers alongside administrative identifiers that do not impact health results.
 
-![Raw Data Spreadsheet](ReadMe_Assets/spredsheet.png)  
+![Raw Data Spreadsheet](ReadMe_Assets/spreadsheet.png)  
 *Observation: Raw data contains administrative columns like ID and No_Pation which act as noise for predictive modeling.*
 
 ### 1.2 Iterative Cleaning & Selection
@@ -33,13 +33,13 @@ Before processing, we examined the raw medical records. The dataset included cli
 ### 1.3 Outlier Handling: Comparative Analysis
 Clinical data is prone to extreme readings. To handle this properly, we performed a comparative analysis using two different detection methods.
 
-![Outlier Calculations](outlier_calc.png)
+![Outlier Calculations](ReadMe_Assets/outlier_calc.png)
 
 *   **The Comparison:** As shown in our analysis, the **IQR method** was much more sensitive. For example, in Urea, IQR found 65 outliers while Z-Score only found 19.
 *   **Smart Reasoning:** We chose **IQR** because it relies on the actual spread of our data (quartiles). The Z-Score assumes a perfect "Bell Curve" distribution, which is rarely the case in medical datasets where specific markers are naturally skewed.
 *   **The Fix (Capping):** Instead of deleting records, we "capped" values at the IQR boundaries. This preserved our sample size while ensuring the **model** wasn't distracted by noisy extremes.
 
-![Boxplot Outliers](Outliers_Boxplots.png)  
+![Boxplot Outliers](Project_plots/Outliers_Boxplots.png)  
 *Observation: Boxplots clearly show the skewed nature of clinical markers like Creatinine (Cr) and Urea.*
 
 ---
@@ -57,14 +57,14 @@ A human-level reality of this data is that healthy people rarely get tested. Thi
 
 We tested four mathematical approaches. While all were strong, the **Decision Tree** was the most effective (~97.5% Accuracy).
 
-![Algorithm Accuracy](Algorithm_Accuracy.png)
+![Algorithm Accuracy](Project_plots/Algorithm_Accuracy.png)
 
 **Why it outperformed the others:**
 *   **Vs. Naive Bayes:** Naive Bayes assumes markers are independent. However, BMI and blood sugar are biologically linked. The Decision Tree naturally understands these connections.
 *   **Vs. KNN:** KNN looks at "distance." In crowded medical data, healthy and sick points overlap. The Decision Tree cuts through this by using precise clinical thresholds.
 *   **The Logic:** A Decision Tree mirrors a doctor’s thought process (*Check blood sugar -> check BMI*). This logical sorting made it the best fit.
 
-![Decision Tree Map](Decision_Tree.png)  
+![Decision Tree Map](Project_plots/Decision_Tree.png)  
 *Observation: The model identifies HbA1c as the primary factor in medical diagnosis.*
 
 ---
@@ -74,13 +74,13 @@ We tested four mathematical approaches. While all were strong, the **Decision Tr
 ### 4.1 Accuracy and Validation
 We used a **Confusion Matrix** to see where the **model** made mistakes. It correctly identified almost every diabetic patient, with nearly zero "false negatives"—the most dangerous error in healthcare.
 
-![Confusion Matrix](Confusion_Matrix.png)
+![Confusion Matrix](Project_plots/Confusion_Matrix.png)
 
 ### 4.2 Human-Level Insights
 *   **Age and Risk:** We observed that while age is a factor, a notable **15.4%** of people under 40 were already diabetic, highlighting the importance of metabolic markers over chronological age.
 
-![Correlation Matrix](Correlation_Matrix.png)
-![Age Distribution](Age_Distribution.png)
+![Correlation Matrix](Project_plots/Correlation_Matrix.png)
+![Age Distribution](Project_plots/Age_Distribution.png)
 
 ---
 
