@@ -18,17 +18,31 @@ The following team members contributed to the iterative development of this diag
 
 ## 1. Methodology: Establishing a Clean Baseline
 
-Data mining in healthcare requires a smart, human-level approach. We recognized that this dataset carries a **"Sick Patient Bias"**—since people generally visit clinics only when they feel unwell, the data naturally contains more diabetic cases than healthy ones. Our methodology focused on refining this data into a balanced, clean baseline.
+Data mining in healthcare requires a smart, human-level approach. We recognized that this dataset carries a **"Sick Patient Bias"** since people generally visit clinics only when they feel unwell, the data naturally contains more diabetic cases than healthy ones. Our methodology focused on refining this data into a balanced, clean baseline.
 
 ### 1.1 Data Exploration (Raw State)
-Before processing, we examined the raw medical records. The dataset included clinical markers alongside administrative identifiers that do not impact health results.
+Before any processing or feature engineering begins, we must first verify the integrity of the dataset. A common pitfall in medical data mining is "Information Gaps" missing values that can lead to biased results or broken algorithms.
 
-![Raw Data Spreadsheet](ReadMe_Assets/spreadsheet.png)  
-*Observation: Raw data contains administrative columns like ID and No_Pation which act as noise for predictive modeling.*
+We generated a Missing Data Map to visualize the density of our records. In this visualization, any horizontal yellow lines would represent null or missing values across our clinical markers.
+
+
+![Missing Data Map](Project_plots/Missing_Data_Map.png)
+
+*Observation: As shown in the heatmap, the dataset is a solid block of purple with zero yellow interruptions. This confirms that the dataset is 100% complete across all 1,000 records. With no missing values to impute, we can proceed directly to inspecting the raw records and refining the feature set.*
 
 ### 1.2 Iterative Cleaning & Selection
+
+Before refining the model, we performed a manual inspection of the raw medical records to understand how the features are structured.
+
+![Raw Data Spreadsheet](ReadMe_Assets/spreadsheet.png)
+
+*Observation: Raw data contains administrative columns like ID and No_Pation which act as noise for predictive modeling.*
+
+While the data is complete, it is not yet "clean" for machine learning. We identified two primary areas for improvement:
+
 *   **Removing Identifiers:** We dropped `ID` and `No_Pation`. Keeping these unique markers led the **model** to "memorize" specific patients rather than learning biological trends.
 *   **Label Cleaning:** We used `.str.strip()` to fix the `CLASS` and `Gender` columns. Manually entered data often contains accidental spaces; removing these prevented the **model** from misinterpreting results.
+
 
 ### 1.3 Outlier Handling: Comparative Analysis
 Clinical data is prone to extreme readings. To handle this properly, we performed a comparative analysis using two different detection methods.
