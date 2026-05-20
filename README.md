@@ -3,18 +3,6 @@
 **Instructional Lead:** Prof. Walaa Khaled | **TA:** Esraa Karam  
 
 ### Project Metadata
-The following team members contributed to the iterative development of this diagnostic model:
-
-| Department | Section | Level | ID | Member Name |
-| :--- | :--- | :--- | :--- | :--- |
-| SWE | Section 2 | Level 2 | 20241701835 | عمر أحمد محمد عبداللطيف |
-| SWE | Section 2 | Level 2 | 20241701852 | يوسف وليد ممدوح حبيب |
-| SWE | Section 2 | Level 2 | 20241701832 | عبدالله سمير محمد ابراهيم |
-| SWE | Section 2 | Level 2 | 20241701848 | ياسين عمرو محمد عبدالغني |
-| SWE | Section 2 | Level 2 | 20241701823 | زياد محمد عبدالرحمن محمد |
-| SWE | Section 2 | Level 2 | 20241701837 | عمرو بهاء ابراهيم عبد الرازق |
-
----
 
 ## 1. Methodology: Establishing a Clean Baseline
 
